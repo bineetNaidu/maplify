@@ -9,10 +9,14 @@
   export let lat;
 
   const handleSubmit = () => {
-    MapStore.update((map) => [...map, { lng, lat, desc, city }]);
-    dispatch('addMarker', { lng, lat });
-    desc = '';
-    city = '';
+    if (desc && city && lat && lng) {
+      MapStore.update((map) => [...map, { lng, lat, desc, city }]);
+      dispatch('addMarker', { lng, lat });
+      desc = '';
+      return (city = '');
+    } else {
+      alert('All Fields Need to be filled!');
+    }
   };
 </script>
 

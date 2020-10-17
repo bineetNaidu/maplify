@@ -28,8 +28,10 @@
   });
 
   const addMaker = ({ detail }) => {
-    new mapboxgl.Marker().setLngLat([detail.lng, detail.lat]).addTo(map);
-    dontShowForm = true;
+    if (detail.lat && detail.lng) {
+      new mapboxgl.Marker().setLngLat([detail.lng, detail.lat]).addTo(map);
+      dontShowForm = true;
+    }
   };
 </script>
 
@@ -58,7 +60,10 @@
   }
 </style>
 
-<div class="backdrop" class:show={dontShowForm}>
+<div
+  class="backdrop"
+  class:show={dontShowForm}
+  on:click|self={() => (dontShowForm = true)}>
   <div class="backdrop-body">
     <Form {...geometry} on:addMarker={addMaker} />
   </div>
