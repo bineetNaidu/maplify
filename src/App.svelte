@@ -9,7 +9,12 @@
     zoom: 1.5, // starting zoom
   });
 
-  map.on('click', function (e) {
-    console.log(e);
+  // Add zoom and rotation controls to the map.
+  map.addControl(new mapboxgl.NavigationControl());
+
+  map.on('dblclick', function (e) {
+    const lng = e.lngLat.lng;
+    const lat = e.lngLat.lat;
+    new mapboxgl.Marker().setLngLat([lng, lat]).addTo(map);
   });
 </script>
