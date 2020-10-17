@@ -11,9 +11,18 @@
     zoom: 1.5, // starting zoom
   });
 
-  $MapStore.map(({ lat, lng }) =>
-    new mapboxgl.Marker().setLngLat([lng, lat]).addTo(map)
-  );
+  $MapStore.map(({ lat, lng, desc, city }) => {
+    new mapboxgl.Marker().setLngLat([lng, lat]).addTo(map);
+    new mapboxgl.Popup()
+      .setLngLat([lng, lat])
+      .setHTML(
+        `
+        <h4>${city}</h4>
+        <p>${desc}</p>
+        `
+      )
+      .addTo(map);
+  });
 
   $: dontShowForm = true;
   $: geometry = { lat: undefined, lng: undefined };
@@ -30,6 +39,15 @@
   const addMaker = ({ detail }) => {
     if (detail.lat && detail.lng) {
       new mapboxgl.Marker().setLngLat([detail.lng, detail.lat]).addTo(map);
+      new mapboxgl.Popup()
+        .setLngLat([detail.lng, detail.lat])
+        .setHTML(
+          `
+  <h4>${detail.city}</h4>
+  <p>${detail.desc}</p>
+  `
+        )
+        .addTo(map);
       dontShowForm = true;
     }
   };

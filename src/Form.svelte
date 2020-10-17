@@ -11,7 +11,7 @@
   const handleSubmit = () => {
     if (desc && city && lat && lng) {
       MapStore.update((map) => [...map, { lng, lat, desc, city }]);
-      dispatch('addMarker', { lng, lat });
+      dispatch('addMarker', { lng, lat, desc, city });
       desc = '';
       return (city = '');
     } else {
