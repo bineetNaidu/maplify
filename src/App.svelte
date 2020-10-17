@@ -1,30 +1,15 @@
 <script>
-	export let name;
+  import mapboxgl from 'mapbox-gl/dist/mapbox-gl.js';
+
+  mapboxgl.accessToken = MAPBOX_TOKEN;
+  const map = new mapboxgl.Map({
+    container: 'map', // container id
+    style: 'mapbox://styles/mapbox/dark-v10', // style URL
+    center: [21.500353252696783, 35.067585836584584], // starting position [lng, lat]
+    zoom: 1.5, // starting zoom
+  });
+
+  map.on('click', function (e) {
+    console.log(e);
+  });
 </script>
-
-<main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
-</main>
-
-<style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
-	}
-
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
-</style>
