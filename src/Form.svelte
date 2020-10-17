@@ -1,10 +1,19 @@
 <script>
+  import MapStore from './store';
+  import { createEventDispatcher } from 'svelte';
+  const dispatch = createEventDispatcher();
+
   let desc;
   let city;
   export let lng;
   export let lat;
 
-  const handleSubmit = () => console.log({ desc, city, lng, lat });
+  const handleSubmit = () => {
+    MapStore.update((map) => [...map, { lng, lat, desc, city }]);
+    dispatch('addMarker', { lng, lat });
+    desc = '';
+    city = '';
+  };
 </script>
 
 <style>

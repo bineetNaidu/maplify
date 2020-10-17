@@ -1,6 +1,7 @@
 <script>
   import mapboxgl from 'mapbox-gl/dist/mapbox-gl.js';
   import Form from './Form.svelte';
+  import MapStore from './store';
 
   mapboxgl.accessToken = MAPBOX_TOKEN;
   const map = new mapboxgl.Map({
@@ -10,16 +11,26 @@
     zoom: 1.5, // starting zoom
   });
 
-  $: showForm = true;
+  $MapStore.map(({ lat, lng }) =>
+    new mapboxgl.Marker().setLngLat([lng, lat]).addTo(map)
+  );
+
+  $: dontShowForm = true;
+  $: geometry = { lat: undefined, lng: undefined };
 
   // Add zoom and rotation controls to the map.
   map.addControl(new mapboxgl.NavigationControl());
 
   map.on('dblclick', function (e) {
-    const lng = e.lngLat.lng;
-    const lat = e.lngLat.lat;
-    new mapboxgl.Marker().setLngLat([lng, lat]).addTo(map);
+    geometry.lng = e.lngLat.lng;
+    geometry.lat = e.lngLat.lat;
+    dontShowForm = false;
   });
+
+  const addMaker = ({ detail }) => {
+    new mapboxgl.Marker().setLngLat([detail.lng, detail.lat]).addTo(map);
+    dontShowForm = true;
+  };
 </script>
 
 <style>
@@ -47,8 +58,8 @@
   }
 </style>
 
-<div class="backdrop" class:show={showForm}>
+<div class="backdrop" class:show={dontShowForm}>
   <div class="backdrop-body">
-    <Form />
+    <Form {...geometry} on:addMarker={addMaker} />
   </div>
 </div>
