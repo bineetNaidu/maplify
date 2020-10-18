@@ -87,7 +87,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 15% 30%;
+    margin: 12% 30%;
     background: #67809645;
     padding: 25px;
     border-radius: 15px;
