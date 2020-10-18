@@ -2,6 +2,8 @@
   import mapboxgl from 'mapbox-gl/dist/mapbox-gl.js';
   import Form from './Form.svelte';
   import MapStore from './store';
+  import { onMount } from 'svelte';
+  import axios from './axios';
 
   mapboxgl.accessToken = MAPBOX_TOKEN;
   const map = new mapboxgl.Map({
@@ -9,19 +11,6 @@
     style: 'mapbox://styles/mapbox/dark-v10', // style URL
     center: [21.500353252696783, 35.067585836584584], // starting position [lng, lat]
     zoom: 1.5, // starting zoom
-  });
-
-  $MapStore.map(({ lat, lng, desc, city }) => {
-    new mapboxgl.Marker().setLngLat([lng, lat]).addTo(map);
-    new mapboxgl.Popup()
-      .setLngLat([lng, lat])
-      .setHTML(
-        `
-        <h4>${city}</h4>
-        <p>${desc}</p>
-        `
-      )
-      .addTo(map);
   });
 
   $: dontShowForm = true;
@@ -51,6 +40,38 @@
       dontShowForm = true;
     }
   };
+
+  onMount(() => {
+    axios
+      .get('/maplify')
+      .then((res) => {
+        res.data.data.map((d) => {
+          MapStore.update((currDatas) => [
+            ...currDatas,
+            {
+              city: d.city,
+              desc: d.desc,
+              lat: d.lat,
+              lng: d.lng,
+            },
+          ]);
+        });
+      })
+      .then(() => {
+        $MapStore.map(({ lat, lng, desc, city }) => {
+          new mapboxgl.Marker().setLngLat([lng, lat]).addTo(map);
+          new mapboxgl.Popup()
+            .setLngLat([lng, lat])
+            .setHTML(
+              `
+        <h4>${city}</h4>
+        <p>${desc}</p>
+        `
+            )
+            .addTo(map);
+        });
+      });
+  });
 </script>
 
 <style>
