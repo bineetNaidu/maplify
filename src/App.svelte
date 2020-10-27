@@ -97,6 +97,11 @@
     display: none;
     pointer-events: none;
   }
+  @media (max-width: 500px) {
+    .backdrop-body {
+      margin: 12% 10%;
+    }
+  }
 </style>
 
 <div
