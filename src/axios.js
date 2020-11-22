@@ -1,7 +1,7 @@
 import Axios from 'axios';
 
 const axios = Axios.create({
-  baseURL: 'https://myapi-server-es.herokuapp.com/api/v1/',
+  baseURL: 'https://my-api-server-en.herokuapp.com/',
 });
 
 export default axios;
