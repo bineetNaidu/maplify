@@ -70,7 +70,8 @@
             )
             .addTo(map);
         });
-      });
+      })
+      .catch((e) => alert(e.message));
   });
 </script>
 
